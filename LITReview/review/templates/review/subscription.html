@@ -1,0 +1,51 @@
+{% extends "review/base.html" %}
+
+{% block title %}
+<div class="">
+    <ul class="header nav-list">
+        <li class="nav-item"><h1>{{ page_title }}</h1></li>
+        <li class="nav-item"><a href="{% url 'flux' %}">Flux</a></li>
+        <li class="nav-item"><a href="{% url 'personal_posts' %}">Posts</a></li>
+        <li class="nav-item"><a href="{% url 'subscription' %}">Abonnements</a></li>
+        <li class="nav-item"><a href="{% url 'logout' %}">Se déconnecter</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block contenu %}
+
+<div class="column-container">
+    <h3>Suivre d'autres utilisateurs</h3>
+    <div class="search row-container">
+        <form action="search" method="post">
+            <input class="element" type="text" placeholder="Nom d'utilisateur" name="username" required>
+            <input class="element" type="submit" id="submit" value="Envoyer">
+        </form>
+    </div>
+    <h3>Abonnements</h3>
+    <div class="subscriptions column-container">
+        <div class="row-container table">
+            <div class="element left">jean_5679</div>
+            <button class="element right" type="submit"><a href="">Désabonner</a></button>
+        </div>
+         <div class="row-container table">
+            <div class="element left">sarahj</div>
+            <button class="element right" type="submit"><a href="">Désabonner</a></button>
+        </div>
+         <div class="row-container table">
+            <div class="element left">severine123</div>
+            <button class="element right" type="submit"><a href="">Désabonner</a></button>
+        </div>
+    </div>
+    <h3>Abonnés</h3>
+    <div class="subscribers column-container">
+        <div class="row-container table">
+            <div class="element left">jean_5679</div>
+        </div>
+         <div class="row-container table">
+            <div class="element left">severine123</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

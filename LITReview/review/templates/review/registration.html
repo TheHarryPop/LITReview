@@ -1,0 +1,32 @@
+{% extends "review/base.html" %}
+
+{% block title %}<h1 class="header">{{ page_title }}</h1>{% endblock %}
+
+{% block contenu %}
+
+<div class="column-container">
+  <h2>Inscrivez vous</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        <div class="infos">
+          {{ field }}
+          {% if field.help_text %}
+          <figcaption>{{ field.help_text }}</figcaption>
+          {% endif %}
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </div>
+      </p>
+    {% endfor %}
+    <div class="button">
+        <button class="element"><a href="{% url 'connexion' %}">Retour</a></button>
+        <button type="submit">Sign up</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

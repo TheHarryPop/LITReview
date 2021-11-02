@@ -1,0 +1,125 @@
+
+* {
+	box-sizing: border-box;
+	list-style: none;
+	text-decoration: none;;
+}
+
+body {
+	font-family: sans-serif;
+	background: linear-gradient(45deg, #f37646, #f3e946) center center no-repeat;
+	border: black 3px solid;
+	min-height: 100vh;
+}
+
+a {
+    color: black;
+}
+
+img {
+    width: 100px;
+}
+
+.nav-list {
+	padding: 1rem 0;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	font-size: 18px;
+}
+
+.nav-item {
+	margin-right: 2rem;
+	font-weight: 600;
+	color: black;
+}
+
+.nav-item:nth-child(1) {
+	margin-right: auto;
+	margin-left: 10rem;
+}
+
+.header {
+    text-align: center;
+    border-bottom: black 3px solid;
+    padding-bottom: 15px;
+}
+.row-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.column-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.element {
+	margin: 5px;
+}
+
+.flux-size {
+	width: 50%;
+}
+
+.ticket {
+	background: darkgrey;
+    border-radius: 10px ;
+    box-shadow: 10px 5px 5px gray;
+    padding: 5px;
+    margin: 10px;
+}
+
+.ticket_span {
+	font-weight: bold;
+}
+
+.subscriptions, .subscribers, .ticket {
+	width: 80%;
+	border: black solid 3px;
+}
+
+.table {
+	width: 100%;
+	border: solid black 3px;
+}
+
+.left {
+	margin-left: 10px;
+	margin-right: auto;
+}
+
+.right {
+	margin-left: auto;
+	margin-right: 10px;
+}
+
+.ticket-left {
+	display: flex;
+	align-items: flex-start;
+	border: solid red 3px;
+}
+
+figcaption {
+transition:all 1s;
+opacity:0;
+background-color: lightgreen;
+text-align:center;
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+border:3px solid black;
+}
+
+input {
+	width: 100%;
+}
+
+.infos:hover figcaption {
+opacity:1;
+}
