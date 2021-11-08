@@ -1,2 +1,4 @@
 /env
 .idea
+LITReview/db.sqlite3
+LITReview/review/migrations/0001_initial.py
