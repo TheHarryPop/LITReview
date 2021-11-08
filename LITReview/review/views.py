@@ -16,7 +16,6 @@ def connexion(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                print("test")
                 login(request, user)
                 return redirect('flux')
             else:
@@ -56,7 +55,7 @@ def flux(request):
 
         reviews = Review.objects.all()
 
-        infos = {'page_title': 'Flux', 'tickets': tickets, 'reviews': reviews, 'user': user.username}
+        infos = {'page_title': 'Flux', 'tickets': tickets, 'reviews': reviews}
         return render(request, 'review/flux.html', infos)
     else:
         return redirect(connexion)
@@ -77,8 +76,9 @@ def ticket(request):
         elif request.method == 'POST':
             form = TicketForm(request.POST)
             if form.is_valid():
-                Ticket.user = 4
-                form.save()
+                obj = form.save()
+                obj.user = user
+                obj.save()
                 return redirect('flux')
     else:
         return redirect(connexion)
@@ -94,8 +94,9 @@ def review(request):
         elif request.method == 'POST':
             form = ReviewForm(request.POST)
             if form.is_valid():
-                Review.user = user
-                form.save()
+                obj = form.save()
+                obj.user = user
+                obj.save()
                 return redirect('flux')
     else:
         return redirect(connexion)

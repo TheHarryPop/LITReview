@@ -6,9 +6,11 @@ class TicketForm(ModelForm):
     class Meta:
         model = Ticket
         fields = ['title', 'description', 'image']
+        labels = {'title': 'Titre :', 'description': 'Description :', 'image': 'Couverture :'}
 
 
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ['rating', 'headline', 'body']
+        fields = ['headline', 'body', 'rating']
+        labels = {'headline': 'Titre :', 'body': 'Critique :', 'rating': 'Note :'}
