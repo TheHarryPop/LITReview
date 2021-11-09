@@ -15,20 +15,22 @@
 {% block contenu %}
 
 <div class="column-container">
-    <h2>Créer une critique en réponse à un ticket</h2>
-    <form method="post" action="{% url 'flux' %}">
-        {% csrf_token %}
-        {% for field in form %}
-        <p>
-            {{field.label}}
-            <br>
-             {{field}}
-            <br>
-        </p>
-        {% endfor %}
-        <input type="submit">
-    </form>
+    <h2>Répondre à un ticket</h2>
+    <div class="small_ticket">
 
+    </div>
+    <form method="post" action="{% url 'review_response' %}" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {% for field in form_2 %}
+        <p>
+            <h3>{{field.label}}</h3>
+            {{field}}
+            <br>
+        {% endfor %}
+        </p>
+        <input class="button" type="submit" >
+    </form>
+    {{ Review.ticket }}
 
 
 </div>

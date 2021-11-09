@@ -26,8 +26,7 @@
                     <p><span class="ticket_span">Titre du livre :</span> {{ ticket.title }}</p>
                     <p><span class="ticket_span">Description :</span> {{ ticket.description }}</p>
                     <p><span class="ticket_span">Auteur :</span> {{ ticket.user }}</p>
-                    {% load static %}
-                    <img src="{% static 'review/images/' %}{{ ticket.image }}" alt="{{ ticket.title }}">
+                    <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}">
                     <button class="element"><a href="{% url 'review response' %}">Créer une critique</a></button>
                 </div>
             {% endfor %}

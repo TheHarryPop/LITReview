@@ -18,14 +18,23 @@
     <h2>Créer une critique</h2>
     <form method="post" action="{% url 'review' %}" enctype='multipart/form-data'>
         {% csrf_token %}
+        <div class="small_ticket">
         {% for field in form %}
         <p>
-        <h3>{{field.label}}</h3>
+            <h3>{{field.label}}</h3>
              {{field}}
             <br>
         </p>
         {% endfor %}
-        <input type="submit" >
+        </div>
+        {% for field in form_2 %}
+        <p>
+            <h3>{{field.label}}</h3>
+            {{field}}
+            <br>
+        {% endfor %}
+        </p>
+        <input class="button" type="submit" >
     </form>
     {{ Review.ticket }}
 

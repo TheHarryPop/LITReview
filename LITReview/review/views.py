@@ -74,7 +74,7 @@ def ticket(request):
             infos = {'page_title': 'Ticket', 'form': form}
             return render(request, 'review/ticket.html', infos)
         elif request.method == 'POST':
-            form = TicketForm(request.POST)
+            form = TicketForm(request.POST, request.FILES)
             if form.is_valid():
                 obj = form.save()
                 obj.user = user
@@ -88,15 +88,20 @@ def review(request):
     user = request.user
     if user.is_active:
         if request.method == 'GET':
-            form = ReviewForm()
-            infos = {'page_title': 'Review', 'form': form}
+            form = TicketForm()
+            form_2 = ReviewForm()
+            infos = {'page_title': 'Review', 'form': form, 'form_2': form_2}
             return render(request, 'review/review.html', infos)
         elif request.method == 'POST':
-            form = ReviewForm(request.POST)
+            form = TicketForm(request.POST, request.FILES)
+            form_2 = ReviewForm(request.POST)
             if form.is_valid():
                 obj = form.save()
                 obj.user = user
                 obj.save()
+                obj_2 = form_2.save()
+                obj_2.user = user
+                obj_2.save()
                 return redirect('flux')
     else:
         return redirect(connexion)

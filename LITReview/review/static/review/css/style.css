@@ -20,6 +20,27 @@ img {
     width: 100px;
 }
 
+form {
+	margin-bottom: 100px;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+textarea {
+	width: 100%;
+}
+
+.small_ticket {
+	border: black solid 1px;
+	padding: 5px;
+	width: 80%;
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+}
+
 .nav-list {
 	padding: 1rem 0;
 	display: flex;
@@ -118,6 +139,10 @@ border:3px solid black;
 
 input {
 	width: 100%;
+}
+
+.button {
+	width: 20%;
 }
 
 .infos:hover figcaption {
