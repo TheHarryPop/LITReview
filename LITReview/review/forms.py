@@ -1,5 +1,5 @@
-from django.forms import forms, ModelForm
-from .models import Ticket, Review
+from django.forms import ModelForm
+from .models import Ticket, Review, UserFollows
 
 
 class TicketForm(ModelForm):
@@ -14,3 +14,11 @@ class ReviewForm(ModelForm):
         model = Review
         fields = ['headline', 'body', 'rating']
         labels = {'headline': 'Titre de la critique :', 'body': 'Critique :', 'rating': 'Note :'}
+
+
+class UserFollowsForm(ModelForm):
+    class Meta:
+        model = UserFollows
+        fields = ['followed_user']
+        labels = {'followed_user': "Nom d'utilisateur :"}
+

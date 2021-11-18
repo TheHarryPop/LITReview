@@ -84,34 +84,43 @@ def ticket(request):
         return redirect(connexion)
 
 
-def review(request):
+def review(request, ticket_id=None):
     user = request.user
     if user.is_active:
-        if request.method == 'GET':
-            form = TicketForm()
-            form_2 = ReviewForm()
-            infos = {'page_title': 'Review', 'form': form, 'form_2': form_2}
-            return render(request, 'review/review.html', infos)
-        elif request.method == 'POST':
-            form = TicketForm(request.POST, request.FILES)
-            form_2 = ReviewForm(request.POST)
-            if form.is_valid():
-                obj = form.save()
-                obj.user = user
-                obj.save()
-                obj_2 = form_2.save()
-                obj_2.user = user
-                obj_2.save()
-                return redirect('flux')
+        instanced_ticket = Ticket.objects.get(pk=ticket_id) if ticket_id is not None else None
+        if instanced_ticket is None:
+            if request.method == 'GET':
+                ticket_form = TicketForm()
+                review_form = ReviewForm()
+                infos = {'page_title': 'Review', 'ticket_form': ticket_form, 'review_form': review_form,
+                         'range': range(6)}
+                return render(request, 'review/review.html', infos)
+            elif request.method == 'POST':
+                ticket_form = TicketForm(request.POST, request.FILES)
+                review_form = ReviewForm(request.POST)
+                if ticket_form.is_valid() and review_form.is_valid():
+                    ticket_form.instance.user = request.user
+                    ticket_obj = ticket_form.save()
+                    review_form.instance.user = request.user
+                    review_form.instance.ticket = Ticket.objects.get(pk=ticket_obj.pk)
+                    review_form.save()
+                    return redirect('flux')
+        else:
+            if request.method == 'GET':
+                review_form = ReviewForm()
+                infos = {'page_title': 'Review', 'instanced_ticket': instanced_ticket, 'review_form': review_form,
+                         'range': range(6)}
+                return render(request, 'review/review.html', infos)
+            elif request.method == 'POST':
+                review_form = ReviewForm(request.POST)
+                if review_form.is_valid():
+                    if review_form.is_valid():
+                        review_form.instance.user = request.user
+                        review_form.instance.ticket = Ticket.objects.get(pk=ticket_id)
+                        review_form.save()
+                        return redirect('flux')
     else:
         return redirect(connexion)
-
-
-def review_response(request, ticket_id):
-    instance_ticket = Ticket.objects.get(pk=ticket_id)
-    form = ReviewForm(ticket=instance_ticket)
-    infos = {'page_title': 'Review Response', 'form': form}
-    return render(request, 'review/review_response.html', infos)
 
 
 def personal_posts(request):

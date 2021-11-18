@@ -84,22 +84,29 @@ textarea {
 }
 
 .flux-size {
-	width: 50%;
+	width: 75%;
 }
 
 .ticket {
 	background: darkgrey;
+}
+
+.review {
+	background: skyblue;
+}
+
+.ticket, .review {
     border-radius: 10px ;
     box-shadow: 10px 5px 5px gray;
     padding: 5px;
     margin: 10px;
 }
 
-.ticket_span {
+.ticket_span, .review_span {
 	font-weight: bold;
 }
 
-.subscriptions, .subscribers, .ticket {
+.subscriptions, .subscribers, .ticket, .review {
 	width: 80%;
 	border: black solid 3px;
 }

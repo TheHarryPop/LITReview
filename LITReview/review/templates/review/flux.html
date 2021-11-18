@@ -25,21 +25,52 @@
                 <div class="column-container ticket">
                     <p><span class="ticket_span">Titre du livre :</span> {{ ticket.title }}</p>
                     <p><span class="ticket_span">Description :</span> {{ ticket.description }}</p>
-                    <p><span class="ticket_span">Auteur :</span> {{ ticket.user }}</p>
+                    <p><span class="ticket_span">Auteur du ticket :</span> {{ ticket.user }}</p>
                     <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}">
-                    <button class="element"><a href="{% url 'review response' %}">Créer une critique</a></button>
+                    <p></p><button id="{{ticket.id}}" class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
                 </div>
+            {% if reviews %}
+                {% for review in reviews %}
+                    {% if review.ticket_id == ticket.id %}
+                    <div class="column-container review">
+                        <div class="column-container ticket">
+                            <p><span class="ticket_span">Note de la critique :</span> {{ review.ticket.title }}</p>
+                            <p><span class="ticket_span">Description :</span> {{ review.ticket.description }}</p>
+                            <p><span class="ticket_span">Auteur du ticket :</span> {{ review.ticket.user }}</p>
+                            <img src="{{ review.ticket.image.url }}" alt="{{ review.ticket.title }}">
+                        </div>
+                        <p><span class="review_span">Titre de la critique :</span> {{ review.headline }}</p>
+                        <p><span class="review_span">Description de la critique :</span> {{ review.body }}</p>
+                        <p><span class="review_span">Auteur de la critique :</span> {{ review.user }}</p>
+                        <p><span class="review_span">Note de la critique :</span> {{ review.rating }}/5</p>
+                        {% if user == review.user %}
+                        <div class="row-container flux-size">
+                            <p><button class="element"><a href="">Modifier la critique</a></button></p>
+                            <p><button class="element"><a href="">Supprimer la critique</a></button></p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <span>There is no review</span>
+            {% endif %}
             {% endfor %}
+
+
+
+
+
+
+
+
+
         {% else %}
             <span>There is no ticket</span>
         {% endif %}
-        {% if reviews %}
-            {% for review in reviews %}
-                <li>{{ review.ticket }}</li>
-            {% endfor %}
-        {% else %}
-            <span>There is no review</span>
-        {% endif %}
+
+
+
     </div>
 
 </div>

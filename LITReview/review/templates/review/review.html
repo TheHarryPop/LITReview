@@ -16,28 +16,74 @@
 
 <div class="column-container">
     <h2>Créer une critique</h2>
-    <form method="post" action="{% url 'review' %}" enctype='multipart/form-data'>
+
+    {% if instanced_ticket %}
+
+     <div class="column-container ticket">
+         <p><span class="ticket_span">Titre du livre :</span> {{ instanced_ticket.title }}</p>
+         <p><span class="ticket_span">Description :</span> {{ instanced_ticket.description }}</p>
+         <p><span class="ticket_span">Auteur du ticket :</span> {{ instanced_ticket.user }}</p>
+         <img src="{{ instanced_ticket.image.url }}" alt="{{ instanced_ticket.title }}">
+     </div>
+
+    <form method="post" action="{% url 'review' ticket_id=instanced_ticket.id %}" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {% for field in review_form %}
+        <p>
+            {% if field.label != "Note :" %}
+                <h3>{{field.label}}</h3>
+                {{field}}
+                <br>
+            {% else %}
+                <h3>{{field.label}}</h3>
+                <div class="row-container">
+                    {% for i in range %}
+                    <label for="{{i}}">{{i}}</label>
+                    <input type="radio" value="{{i}}" name="rating" id="{{i}}">
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </p>
+        {% endfor %}
+
+        <input class="button" type="submit" >
+     </form>
+
+    {% else %}
+
+     <form method="post" action="{% url 'review' %}" enctype='multipart/form-data'>
         {% csrf_token %}
         <div class="small_ticket">
-        {% for field in form %}
-        <p>
-            <h3>{{field.label}}</h3>
-             {{field}}
-            <br>
-        </p>
+        {% for field in ticket_form %}
+            <p>
+                <h3>{{field.label}}</h3>
+                 {{field}}
+                <br>
+            </p>
         {% endfor %}
         </div>
-        {% for field in form_2 %}
+        {% for field in review_form %}
         <p>
-            <h3>{{field.label}}</h3>
-            {{field}}
-            <br>
-        {% endfor %}
+            {% if field.label != "Note :" %}
+                <h3>{{field.label}}</h3>
+                {{field}}
+                <br>
+            {% else %}
+                <h3>{{field.label}}</h3>
+                <div class="row-container">
+                    {% for i in range %}
+                    <label for="{{i}}">{{i}}</label>
+                    <input type="radio" value="{{i}}" name="rating" id="{{i}}">
+                    {% endfor %}
+                </div>
+            {% endif %}
         </p>
-        <input class="button" type="submit" >
-    </form>
-    {{ Review.ticket }}
+        {% endfor %}
 
+        <input class="button" type="submit" >
+     </form>
+
+    {% endif %}
 
 </div>
 
