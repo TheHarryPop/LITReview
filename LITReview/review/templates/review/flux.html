@@ -27,7 +27,14 @@
                     <p><span class="ticket_span">Description :</span> {{ ticket.description }}</p>
                     <p><span class="ticket_span">Auteur du ticket :</span> {{ ticket.user }}</p>
                     <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}">
-                    <p></p><button id="{{ticket.id}}" class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                    {% if user == ticket.user %}
+                        <div class="row-container flux-size">
+                            <p><button class="element"><a href="{% url 'edit_ticket' ticket_id=ticket.id %}">Modifier le ticket</a></button></p>
+                            <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                        </div>
+                    {% else %}
+                        <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                    {% endif %}
                 </div>
             {% if reviews %}
                 {% for review in reviews %}

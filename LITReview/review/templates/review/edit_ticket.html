@@ -15,15 +15,18 @@
 {% block contenu %}
 
 <div class="column-container">
-    <h2>Créer un ticket</h2>
+    <h2>Modifier un ticket</h2>
     <form method="post"  enctype='multipart/form-data'>
         {% csrf_token %}
         {% for field in form %}
-
-            <h3>{{field.label}}</h3>
-            {{field}}
-            <br>
-
+            {% if field.label != "Couverture :" %}
+                <h3>{{field.label}}</h3>
+                {{field}}
+                <br>
+            {% else %}
+                <h3>{{field.label}}</h3>
+                {{field}}
+            {% endif %}
         {% endfor %}
         <input class="button" type="submit" >
     </form>

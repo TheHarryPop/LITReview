@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Form, IntegerField
 from .models import Ticket, Review, UserFollows
 
 
@@ -21,4 +21,3 @@ class UserFollowsForm(ModelForm):
         model = UserFollows
         fields = ['followed_user']
         labels = {'followed_user': "Nom d'utilisateur :"}
-

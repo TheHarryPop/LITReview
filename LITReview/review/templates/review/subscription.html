@@ -15,36 +15,72 @@
 {% block contenu %}
 
 <div class="column-container">
+    {{ following }}
+
+</div>
+
+
+<div class="column-container">
     <h3>Suivre d'autres utilisateurs</h3>
     <div class="search row-container">
-        <form action="search" method="post">
-            <input class="element" type="text" placeholder="Nom d'utilisateur" name="username" required>
-            <input class="element" type="submit" id="submit" value="Envoyer">
+        <form method="post" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {% for field in form %}
+            <p>
+                <h3>{{field.label}}</h3>
+                {{field}}
+                <br>
+            </p>
+            <input class="element" type="submit" value="Suivre">
+            {% endfor %}
         </form>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
+
     <h3>Abonnements</h3>
+
     <div class="subscriptions column-container">
-        <div class="row-container table">
-            <div class="element left">jean_5679</div>
-            <button class="element right" type="submit"><a href="">Désabonner</a></button>
-        </div>
-         <div class="row-container table">
-            <div class="element left">sarahj</div>
-            <button class="element right" type="submit"><a href="">Désabonner</a></button>
-        </div>
-         <div class="row-container table">
-            <div class="element left">severine123</div>
-            <button class="element right" type="submit"><a href="">Désabonner</a></button>
-        </div>
+
+        {% if user_follows %}
+
+            {% for user_follow in user_follows %}
+                <div class="row-container table">
+                    <div class="element left">{{ user_follow.followed_user }}</div>
+                    <button class="element right" type="submit"><a href="{% url 'unsubscribe' followed_user_id=user_follow.followed_user_id %}">Se désabonner</a></button>
+                </div>
+            {% endfor %}
+
+        {% else %}
+
+        <p>Vous n'êtes abonné à aucun utilisateur</p>
+
+        {% endif %}
     </div>
+
     <h3>Abonnés</h3>
+
     <div class="subscribers column-container">
-        <div class="row-container table">
-            <div class="element left">jean_5679</div>
-        </div>
-         <div class="row-container table">
-            <div class="element left">severine123</div>
-        </div>
+
+        {% if followers %}
+
+            {% for follower in followers %}
+            <div class="row-container table">
+                <div class="element left">{{ follower.user }}</div>
+            </div>
+            {% endfor %}
+
+        {% else %}
+
+        <p>Personne ne suit votre profil</p>
+
+        {% endif %}
+
     </div>
 </div>
 
