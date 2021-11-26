@@ -129,7 +129,7 @@ def edit_ticket(request, ticket_id):
     if user.is_active:
         if request.method == 'GET':
             form = TicketForm(instance=instanced_ticket)
-            infos = {'page_title': 'Ticket', 'form': form}
+            infos = {'page_title': 'Ticket', 'form': form, 'test': instanced_ticket}
             return render(request, 'review/edit_ticket.html', infos)
         elif request.method == 'POST':
             form = TicketForm(request.POST, request.FILES)
@@ -137,13 +137,20 @@ def edit_ticket(request, ticket_id):
                 data_ticket = Ticket.objects.get(pk=ticket_id)
                 data_ticket.title = form.cleaned_data['title']
                 data_ticket.description = form.cleaned_data['description']
-                data_ticket.image = form.cleaned_data['image']
+                if form.cleaned_data['image']:
+                    data_ticket.image = form.cleaned_data['image']
                 data_ticket.save()
                 return redirect('flux')
-            else:
-                print('invalide')
     else:
         return redirect(connexion)
+
+
+def delete_ticket(request, ticket_id):
+    user = request.user
+    data_ticket = Ticket.objects.filter(id=ticket_id).filter(user=user)
+    if data_ticket:
+        data_ticket.delete()
+    return redirect('flux')
 
 
 def review(request, ticket_id=None):
@@ -189,9 +196,20 @@ def edit_review(request, review_id):
     return HttpResponse("Edit review %s" % review_id)
 
 
+def delete_review(request, review_id):
+    user = request.user
+    data_review = Review.objects.filter(id=review_id).filter(user=user)
+    if data_review:
+        data_review.delete()
+    return redirect('flux')
+
+
 def personal_posts(request):
     user = request.user
     if user.is_active:
-        pass
+        data_ticket = Ticket.objects.filter(user=user)
+        data_review = Review.objects.filter(user=user)
+        infos = {'page_title': 'Posts Personnels', 'data_ticket': data_ticket, 'data_review': data_review}
+        return render(request, 'review/personal_posts.html', infos)
     else:
         return redirect(connexion)

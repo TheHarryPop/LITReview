@@ -30,54 +30,43 @@
                     {% if user == ticket.user %}
                         <div class="row-container flux-size">
                             <p><button class="element"><a href="{% url 'edit_ticket' ticket_id=ticket.id %}">Modifier le ticket</a></button></p>
+                            <p><button class="element"><a href="{% url 'delete_ticket' ticket_id=ticket.id %}">Supprimer le ticket</a></button></p>
                             <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
                         </div>
                     {% else %}
                         <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
                     {% endif %}
                 </div>
-            {% if reviews %}
-                {% for review in reviews %}
-                    {% if review.ticket_id == ticket.id %}
-                    <div class="column-container review">
-                        <div class="column-container ticket">
-                            <p><span class="ticket_span">Note de la critique :</span> {{ review.ticket.title }}</p>
-                            <p><span class="ticket_span">Description :</span> {{ review.ticket.description }}</p>
-                            <p><span class="ticket_span">Auteur du ticket :</span> {{ review.ticket.user }}</p>
-                            <img src="{{ review.ticket.image.url }}" alt="{{ review.ticket.title }}">
-                        </div>
-                        <p><span class="review_span">Titre de la critique :</span> {{ review.headline }}</p>
-                        <p><span class="review_span">Description de la critique :</span> {{ review.body }}</p>
-                        <p><span class="review_span">Auteur de la critique :</span> {{ review.user }}</p>
-                        <p><span class="review_span">Note de la critique :</span> {{ review.rating }}/5</p>
-                        {% if user == review.user %}
-                        <div class="row-container flux-size">
-                            <p><button class="element"><a href="">Modifier la critique</a></button></p>
-                            <p><button class="element"><a href="">Supprimer la critique</a></button></p>
+                {% if reviews %}
+                    {% for review in reviews %}
+                        {% if review.ticket_id == ticket.id %}
+                        <div class="column-container review">
+                            <div class="column-container ticket">
+                                <p><span class="ticket_span">Note de la critique :</span> {{ review.ticket.title }}</p>
+                                <p><span class="ticket_span">Description :</span> {{ review.ticket.description }}</p>
+                                <p><span class="ticket_span">Auteur du ticket :</span> {{ review.ticket.user }}</p>
+                                <img src="{{ review.ticket.image.url }}" alt="{{ review.ticket.title }}">
+                            </div>
+                            <p><span class="review_span">Titre de la critique :</span> {{ review.headline }}</p>
+                            <p><span class="review_span">Description de la critique :</span> {{ review.body }}</p>
+                            <p><span class="review_span">Auteur de la critique :</span> {{ review.user }}</p>
+                            <p><span class="review_span">Note de la critique :</span> {{ review.rating }}/5</p>
+                            {% if user == review.user %}
+                            <div class="row-container flux-size">
+                                <p><button class="element"><a href="">Modifier la critique</a></button></p>
+                                <p><button class="element"><a href="{% url 'delete_review' review_id=review.id %}">Supprimer la critique</a></button></p>
+                            </div>
+                            {% endif %}
                         </div>
                         {% endif %}
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <span>There is no review</span>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <span>Il n'y a pas de critiques</span>
+                {% endif %}
             {% endfor %}
-
-
-
-
-
-
-
-
-
         {% else %}
-            <span>There is no ticket</span>
+            <span>Il n'y a pas de tickets</span>
         {% endif %}
-
-
-
     </div>
 
 </div>

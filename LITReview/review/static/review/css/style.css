@@ -155,3 +155,8 @@ input {
 .infos:hover figcaption {
 opacity:1;
 }
+
+#redirection {
+	text-decoration: underline;
+	font-weight: bold;
+}

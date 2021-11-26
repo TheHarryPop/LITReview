@@ -26,13 +26,11 @@
             {% else %}
                 <h3>{{field.label}}</h3>
                 {{field}}
+                <img src="{{ test.image.url }}" alt="">
             {% endif %}
         {% endfor %}
         <input class="button" type="submit" >
     </form>
-
-
-
 </div>
 
 {% endblock %}

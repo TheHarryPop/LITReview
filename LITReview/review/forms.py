@@ -1,5 +1,6 @@
 from django.forms import ModelForm, Form, IntegerField
 from .models import Ticket, Review, UserFollows
+from django import forms
 
 
 class TicketForm(ModelForm):
