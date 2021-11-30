@@ -25,11 +25,19 @@
                 <br>
             {% else %}
                 <h3>{{field.label}}</h3>
-                {{field}}
-                <img src="{{ test.image.url }}" alt="">
+                <div class="row-container">
+                    <div class="column-container">
+                        <label for="old_image">Image actuelle :</label>
+                        <img id="old_image" src="{{ instanced_ticket.image.url }}" alt="instanced_ticket.name">
+                    </div>
+                    <div class="column-container">
+                        <label for="new_image">Nouvelle image :</label>
+                        <input id="new_image" type="file" name="image" accept="image/*">
+                    </div>
+                </div>
             {% endif %}
         {% endfor %}
-        <input class="button" type="submit" >
+        <input class="button" type="submit" value="Enregistrer les modifications">
     </form>
 </div>
 

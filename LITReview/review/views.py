@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -59,7 +58,12 @@ def flux(request):
     if user.is_active:
         tickets = Ticket.objects.all()
         reviews = Review.objects.all()
-        infos = {'page_title': 'Flux', 'tickets': tickets, 'reviews': reviews}
+        tickets_list = []
+        for ticket_data in tickets:
+            for review_data in reviews:
+                if ticket_data.id == review_data.ticket_id:
+                    tickets_list.append(ticket_data)
+        infos = {'page_title': 'Flux', 'tickets': tickets, 'reviews': reviews, 'tickets_list': tickets_list}
         return render(request, 'review/flux.html', infos)
     else:
         return redirect(connexion)
@@ -78,20 +82,23 @@ def subscription(request):
             form = UserFollowsForm(request.POST, request.FILES)
             if form.is_valid():
                 followed_user = form.cleaned_data['followed_user']
-                if user != followed_user:
-                    data_check = UserFollows.objects.filter(user=user).filter(followed_user=followed_user)
-                    if not data_check:
-                        form.instance.user = request.user
-                        form.save()
-                        messages.success(request, 'Vous êtes maintenant abonné à cet utilisateur')
-                        return redirect('subscription')
+                if followed_user is not None:
+                    if user != followed_user:
+                        data_check = UserFollows.objects.filter(user=user).filter(followed_user=followed_user)
+                        if not data_check:
+                            form.instance.user = request.user
+                            form.save()
+                            messages.success(request, 'Vous êtes maintenant abonné à cet utilisateur')
+                            return redirect('subscription')
+                        else:
+                            messages.error(request, "Vous suivez déjà cet utilisateur")
+                            return redirect('subscription')
                     else:
-                        messages.error(request, "Vous suivez déjà cet utilisateur")
+                        messages.error(request, "Vous ne pouvez pas suivre votre propre profil")
                         return redirect('subscription')
-                else:
-                    messages.error(request, "Vous ne pouvez pas suivre votre propre profil")
+                elif followed_user is None:
+                    messages.error(request, "Vous devez sélectionner un utilisateur")
                     return redirect('subscription')
-
     else:
         return redirect(connexion)
 
@@ -129,7 +136,7 @@ def edit_ticket(request, ticket_id):
     if user.is_active:
         if request.method == 'GET':
             form = TicketForm(instance=instanced_ticket)
-            infos = {'page_title': 'Ticket', 'form': form, 'test': instanced_ticket}
+            infos = {'page_title': 'Ticket', 'form': form, 'instanced_ticket': instanced_ticket}
             return render(request, 'review/edit_ticket.html', infos)
         elif request.method == 'POST':
             form = TicketForm(request.POST, request.FILES)
@@ -193,7 +200,24 @@ def review(request, ticket_id=None):
 
 
 def edit_review(request, review_id):
-    return HttpResponse("Edit review %s" % review_id)
+    user = request.user
+    instanced_review = Review.objects.get(pk=review_id)
+    if user.is_active:
+        if request.method == 'GET':
+            form = ReviewForm(instance=instanced_review)
+            infos = {'page_title': 'Review', 'form': form, 'range': range(6), 'instanced_review': instanced_review}
+            return render(request, 'review/edit_review.html', infos)
+        elif request.method == 'POST':
+            form = ReviewForm(request.POST, request.FILES)
+            if form.is_valid():
+                data_review = Review.objects.get(pk=review_id)
+                data_review.headline = form.cleaned_data['headline']
+                data_review.body = form.cleaned_data['body']
+                data_review.rating = form.cleaned_data['rating']
+                data_review.save()
+                return redirect('flux')
+    else:
+        return redirect(connexion)
 
 
 def delete_review(request, review_id):
@@ -207,9 +231,17 @@ def delete_review(request, review_id):
 def personal_posts(request):
     user = request.user
     if user.is_active:
+        tickets = Ticket.objects.all()
+        reviews = Review.objects.all()
+        tickets_list = []
+        for ticket_data in tickets:
+            for review_data in reviews:
+                if ticket_data.id == review_data.ticket_id:
+                    tickets_list.append(ticket_data)
         data_ticket = Ticket.objects.filter(user=user)
         data_review = Review.objects.filter(user=user)
-        infos = {'page_title': 'Posts Personnels', 'data_ticket': data_ticket, 'data_review': data_review}
+        infos = {'page_title': 'Posts Personnels', 'data_ticket': data_ticket, 'data_review': data_review,
+                 'tickets_list': tickets_list}
         return render(request, 'review/personal_posts.html', infos)
     else:
         return redirect(connexion)

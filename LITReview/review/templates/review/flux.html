@@ -31,10 +31,18 @@
                         <div class="row-container flux-size">
                             <p><button class="element"><a href="{% url 'edit_ticket' ticket_id=ticket.id %}">Modifier le ticket</a></button></p>
                             <p><button class="element"><a href="{% url 'delete_ticket' ticket_id=ticket.id %}">Supprimer le ticket</a></button></p>
-                            <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                            {% if ticket in tickets_list %}
+                                <p>Une critique existe déjà pour ce ticket</p>
+                            {% else %}
+                                <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                            {% endif %}
                         </div>
                     {% else %}
-                        <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                        {% if ticket in tickets_list %}
+                            <p>Une critique existe déjà pour ce ticket</p>
+                        {% else %}
+                            <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                        {% endif %}
                     {% endif %}
                 </div>
                 {% if reviews %}
@@ -53,7 +61,8 @@
                             <p><span class="review_span">Note de la critique :</span> {{ review.rating }}/5</p>
                             {% if user == review.user %}
                             <div class="row-container flux-size">
-                                <p><button class="element"><a href="">Modifier la critique</a></button></p>
+                                <p><button
+                                        class="element"><a href="{% url 'edit_review' review_id=review.id %}">Modifier la critique</a></button></p>
                                 <p><button class="element"><a href="{% url 'delete_review' review_id=review.id %}">Supprimer la critique</a></button></p>
                             </div>
                             {% endif %}

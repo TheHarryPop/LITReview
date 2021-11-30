@@ -7,7 +7,7 @@
 
 body {
 	font-family: sans-serif;
-	background: linear-gradient(45deg, #f37646, #f3e946) center center no-repeat;
+	background: linear-gradient(45deg, #A7383E, #FD8C92 ) center center no-repeat;
 	border: black 3px solid;
 	min-height: 100vh;
 }
@@ -88,16 +88,17 @@ textarea {
 }
 
 .ticket {
-	background: darkgrey;
+	background: #3E8D8D;
+	box-shadow: 10px 5px 5px #0D3F3F;
 }
 
 .review {
-	background: skyblue;
+	background: #BADE61;
+	box-shadow: 10px 5px 5px #4D6315;
 }
 
 .ticket, .review {
     border-radius: 10px ;
-    box-shadow: 10px 5px 5px gray;
     padding: 5px;
     margin: 10px;
 }

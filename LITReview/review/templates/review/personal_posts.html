@@ -13,52 +13,57 @@
 {% endblock %}
 
 {% block contenu %}
-<div class="column-container">
-    <div class="column-container flux-size">
-        {% if data_ticket %}
-            {% for ticket in data_ticket %}
-                <div class="column-container ticket">
-                    <p><span class="ticket_span">Titre du livre :</span> {{ ticket.title }}</p>
-                    <p><span class="ticket_span">Description :</span> {{ ticket.description }}</p>
-                    <p><span class="ticket_span">Auteur du ticket :</span> {{ ticket.user }}</p>
-                    <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}">
-                    <div class="row-container flux-size">
-                        <p><button class="element"><a href="{% url 'edit_ticket' ticket_id=ticket.id %}">Modifier le ticket</a></button></p>
-                        <p><button class="element"><a href="{% url 'delete_ticket' ticket_id=ticket.id %}">Supprimer le ticket</a></button></p>
-                        <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
-                    </div>
-                </div>
+    <div class="column-container">
+        <div class="column-container flux-size">
             {% if data_review %}
+                <h3>Critiques que vous avez mises en ligne</h3>
                 {% for review in data_review %}
-                    {% if review.ticket_id == ticket.id %}
                     <div class="column-container review">
-                        <div class="column-container ticket">
-                            <p><span class="ticket_span">Note de la critique :</span> {{ review.ticket.title }}</p>
-                            <p><span class="ticket_span">Description :</span> {{ review.ticket.description }}</p>
-                            <p><span class="ticket_span">Auteur du ticket :</span> {{ review.ticket.user }}</p>
-                            <img src="{{ review.ticket.image.url }}" alt="{{ review.ticket.title }}">
-                        </div>
+                        <h3 class="nav-item">Vous avez publié une critique</h3>
                         <p><span class="review_span">Titre de la critique :</span> {{ review.headline }}</p>
                         <p><span class="review_span">Description de la critique :</span> {{ review.body }}</p>
                         <p><span class="review_span">Auteur de la critique :</span> {{ review.user }}</p>
                         <p><span class="review_span">Note de la critique :</span> {{ review.rating }}/5</p>
+                        <div class="column-container ticket">
+                            <p><span class="ticket_span">Titre du livre :</span> {{ review.ticket.title }}</p>
+                            <p><span class="ticket_span">Description :</span> {{ review.ticket.description }}</p>
+                            <p><span class="ticket_span">Auteur du ticket :</span> {{ review.ticket.user }}</p>
+                            <img src="{{ review.ticket.image.url }}" alt="{{ review.ticket.title }}">
+                        </div>
                         <div class="row-container flux-size">
                             <p><button class="element"><a href="">Modifier la critique</a></button></p>
                             <p><button class="element"><a href="{% url 'delete_review' review_id=review.id %}">Supprimer la critique</a></button></p>
                         </div>
                     </div>
-                    {% endif %}
                 {% endfor %}
             {% else %}
-                <span>There is no review</span>
+                <p>Vous n'avez pas encore publié de critique</p>
             {% endif %}
-            {% endfor %}
-        {% else %}
-            <span>Vous n'avez rien posté pour le moment</span>
-        {% endif %}
-
-
-
+        </div>
+        <div class="column-container flux-size">
+            {% if data_ticket %}
+                <h3>Tickets que vous avez mis en ligne</h3>
+                {% for ticket in data_ticket %}
+                    <div class="column-container ticket">
+                        <p><span class="ticket_span">Titre du livre :</span> {{ ticket.title }}</p>
+                        <p><span class="ticket_span">Description :</span> {{ ticket.description }}</p>
+                        <p><span class="ticket_span">Auteur du ticket :</span> {{ ticket.user }}</p>
+                        <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}">
+                        <div class="row-container flux-size">
+                            <p><button class="element"><a href="{% url 'edit_ticket' ticket_id=ticket.id %}">Modifier le ticket</a></button></p>
+                            <p><button class="element"><a href="{% url 'delete_ticket' ticket_id=ticket.id %}">Supprimer le ticket</a></button></p>
+                            {% if ticket in tickets_list %}
+                                <p>Une critique existe déjà pour ce ticket</p>
+                            {% else %}
+                                <p><button class="element"><a href="{% url 'review' ticket_id=ticket.id %}">Créer une critique</a></button></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Vous n'avez pas encore publié de ticket</p>
+            {% endif %}
+        </div>
     </div>
 
 </div>
