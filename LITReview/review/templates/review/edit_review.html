@@ -1,0 +1,48 @@
+{% extends "review/base.html" %}
+
+{% block title %}
+<div class="">
+    <ul class="header nav-list">
+        <li class="nav-item"><h1>{{ page_title }}</h1></li>
+        <li class="nav-item"><a href="{% url 'flux' %}">Flux</a></li>
+        <li class="nav-item"><a href="{% url 'personal_posts' %}">Posts</a></li>
+        <li class="nav-item"><a href="{% url 'subscription' %}">Abonnements</a></li>
+        <li class="nav-item"><a href="{% url 'logout' %}">Se déconnecter</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block contenu %}
+
+<div class="column-container">
+    <h2>Modifier une critique</h2>
+    <form method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+            {% if field.label != "Note :" %}
+                <h3>{{field.label}}</h3>
+                {{field}}
+                <br>
+            {% else %}
+                <h3>{{field.label}}</h3>
+                <div class="row-container">
+                    {% for i in range %}
+                    <div class="column-container">
+                    <label for="{{i}}">{{i}}</label>
+                        {% if i == instanced_review.id %}
+                            <input type="radio" value="{{i}}" name="rating" id="{{i}}" checked>
+                        {% else %}
+                            <input type="radio" value="{{i}}" name="rating" id="{{i}}" checked>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </p>
+        {% endfor %}
+        <input class="button" type="submit" value="Enregistrer les modifications">
+    </form>
+</div>
+
+{% endblock %}
