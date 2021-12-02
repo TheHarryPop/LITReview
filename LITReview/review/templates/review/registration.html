@@ -10,21 +10,16 @@
     {% csrf_token %}
     {% for field in form %}
       <p>
-        {{ field.label_tag }}<br>
+        {{ field.label_tag }}
+        <br>
         <div class="infos">
           {{ field }}
-          {% if field.help_text %}
-          <figcaption>{{ field.help_text }}</figcaption>
-          {% endif %}
-          {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-          {% endfor %}
         </div>
       </p>
     {% endfor %}
-    <div class="button">
-        <button class="element"><a href="{% url 'connexion' %}">Retour</a></button>
-        <button type="submit">Sign up</button>
+    <div class="button row-container">
+        <button class="element"><a href="{% url 'connexion' %}">Retour à l'accueil</a></button>
+        <button type="submit">S'inscrire</button>
     </div>
   </form>
 </div>

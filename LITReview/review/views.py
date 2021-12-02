@@ -20,16 +20,12 @@ def connexion(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-            print(user)
             if user is not None:
                 login(request, user)
                 return redirect('flux')
         else:
             messages.error(request, "Utilisateur inexistant ou mot de passe incorrect")
-
-    form = AuthenticationForm()
-    infos = {'page_title': 'Connexion', 'form': form}
-    return render(request, "review/connexion.html", infos)
+            return redirect('connexion')
 
 
 def logout_user(request):
@@ -122,9 +118,8 @@ def ticket(request):
         elif request.method == 'POST':
             form = TicketForm(request.POST, request.FILES)
             if form.is_valid():
-                obj = form.save()
-                obj.user = user
-                obj.save()
+                form.instance.user = user
+                form.save()
                 return redirect('flux')
     else:
         return redirect(connexion)
@@ -175,9 +170,9 @@ def review(request, ticket_id=None):
                 ticket_form = TicketForm(request.POST, request.FILES)
                 review_form = ReviewForm(request.POST)
                 if ticket_form.is_valid() and review_form.is_valid():
-                    ticket_form.instance.user = request.user
+                    ticket_form.instance.user = user
                     ticket_obj = ticket_form.save()
-                    review_form.instance.user = request.user
+                    review_form.instance.user = user
                     review_form.instance.ticket = Ticket.objects.get(pk=ticket_obj.pk)
                     review_form.save()
                     return redirect('flux')

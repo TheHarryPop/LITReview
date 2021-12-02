@@ -110,11 +110,12 @@ textarea {
 .subscriptions, .subscribers, .ticket, .review {
 	width: 80%;
 	border: black solid 3px;
+	border-radius: 10px ;
 }
 
 .table {
 	width: 100%;
-	border: solid black 3px;
+	border: solid black 1px;
 }
 
 .left {
